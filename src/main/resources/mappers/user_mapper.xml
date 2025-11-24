@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.korit.mybatis_study.mapper.UserMapper">
+    <resultMap id="UserResultMap" type="com.korit.mybatis_study.entity.User">
+        <id property="userId" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+        <result property="createDt" column="create_dt"/>
+        <result property="updateDt" column="update_dt"/>
+    </resultMap>
+
+    <select id="findUserByUsername" resultMap="UserResultMap">
+        select
+            user_id, username, email, create_dt, update_dt
+        from
+            user_tb
+        where
+            username = #{username};
+    </select>
+
+    <insert id="signup" useGeneratedKeys="true" keyProperty="userId">
+        insert into
+            user_tb (user_id, username, password, email, create_dt, update_dt)
+        values
+            (0, #{username}, #{password}, #{email}, now(), null);
+    </insert>
+
+    <select id="getUserAll" resultMap="UserResultMap">
+        select
+            user_id, username, email, create_dt, update_dt
+        from
+            user_tb;
+    </select>
+
+    <update id="editUser">
+        update
+            user_tb
+        set
+            password = #{password},
+            email = #{email},
+            update_dt = now()
+        where
+            username = #{username};
+    </update>
+</mapper>
