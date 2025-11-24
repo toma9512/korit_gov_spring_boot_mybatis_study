@@ -14,7 +14,7 @@
 
     <select id="findUserByUsername" resultMap="UserResultMap">
         select
-            user_id, username, email, create_dt, update_dt
+            user_id, username, password, email, create_dt, update_dt
         from
             user_tb
         where
@@ -45,4 +45,11 @@
         where
             username = #{username};
     </update>
+
+    <delete id="removeUser">
+        delete from
+            user_tb
+        where
+            username = #{username};
+    </delete>
 </mapper>

@@ -28,4 +28,8 @@ public class UserRepository {
     public int editUser(User user) {
         return userMapper.editUser(user);
     }
+
+    public int removeUser(String username) {
+        return userMapper.removeUser(username);
+    }
 }

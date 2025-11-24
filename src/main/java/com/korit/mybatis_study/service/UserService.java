@@ -2,6 +2,7 @@ package com.korit.mybatis_study.service;
 
 import com.korit.mybatis_study.dto.ApiRespDto;
 import com.korit.mybatis_study.dto.EditUserReqDto;
+import com.korit.mybatis_study.dto.RemoveUserReqDto;
 import com.korit.mybatis_study.dto.SignupReqDto;
 import com.korit.mybatis_study.entity.User;
 import com.korit.mybatis_study.repository.UserRepository;
@@ -42,6 +43,7 @@ public class UserService {
             return new ApiRespDto<>("failed", "찾으려는 회원이 없음", null);
         }
 
+        foundUser.get().setPassword(null);
         return new ApiRespDto<>("success", "단건 조회", foundUser.get());
     }
 
@@ -56,7 +58,28 @@ public class UserService {
             return new ApiRespDto<>("failed", "기존 비밀번호와 일치하지 않습니다.", null);
         }
 
-        userRepository.editUser(editUserReqDto.toEntity());
+        int result = userRepository.editUser(editUserReqDto.toEntity());
+
+        if (result != 1) {
+            return new ApiRespDto<>("failed", "수정 실패", null);
+        }
+
         return new ApiRespDto<>("success", "수정 완료", null);
+    }
+
+    public ApiRespDto<?> removeUser(RemoveUserReqDto removeUserReqDto) {
+        Optional<User> foundUser = userRepository.findUserByUsername(removeUserReqDto.getUsername());
+
+        if (foundUser.isEmpty() || !foundUser.get().getPassword().equals(removeUserReqDto.getPassword())) {
+            return new ApiRespDto<>("failed", "회원 정보가 일치하지 않음", null);
+        }
+
+        int result = userRepository.removeUser(removeUserReqDto.getUsername());
+
+        if (result != 1) {
+            return new ApiRespDto<>("failed", "회원 삭제 실패", null);
+        }
+
+        return new ApiRespDto<>("success", "회원 삭제 완료", null);
     }
 }

@@ -15,4 +15,6 @@ public interface UserMapper {
     List<User> getUserAll();
 
     int editUser(User user);
+
+    int removeUser(String username);
 }
