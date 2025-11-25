@@ -22,7 +22,7 @@ public class TodoRepository {
         try {
             todoMapper.addTodo(todo);
         } catch (DuplicateKeyException e) {
-            return null;
+            return Optional.empty();
         }
         return Optional.of(todo);
     }
