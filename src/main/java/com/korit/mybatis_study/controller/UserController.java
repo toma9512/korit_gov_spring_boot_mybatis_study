@@ -2,6 +2,7 @@ package com.korit.mybatis_study.controller;
 
 import com.korit.mybatis_study.dto.EditUserReqDto;
 import com.korit.mybatis_study.dto.RemoveUserReqDto;
+import com.korit.mybatis_study.dto.SigninReqDto;
 import com.korit.mybatis_study.dto.SignupReqDto;
 import com.korit.mybatis_study.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,10 @@ public class UserController {
     @PostMapping("/delete")
     public ResponseEntity<?> removeUser(@RequestBody RemoveUserReqDto removeUserReqDto) {
         return ResponseEntity.ok(userService.removeUser(removeUserReqDto));
+    }
+
+    @GetMapping("/signin")
+    public ResponseEntity<?> signin(@RequestBody SigninReqDto signinReqDto) {
+        return ResponseEntity.ok(userService.signin(signinReqDto));
     }
 }

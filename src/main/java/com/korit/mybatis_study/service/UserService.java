@@ -1,9 +1,6 @@
 package com.korit.mybatis_study.service;
 
-import com.korit.mybatis_study.dto.ApiRespDto;
-import com.korit.mybatis_study.dto.EditUserReqDto;
-import com.korit.mybatis_study.dto.RemoveUserReqDto;
-import com.korit.mybatis_study.dto.SignupReqDto;
+import com.korit.mybatis_study.dto.*;
 import com.korit.mybatis_study.entity.User;
 import com.korit.mybatis_study.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,5 +78,15 @@ public class UserService {
         }
 
         return new ApiRespDto<>("success", "회원 삭제 완료", null);
+    }
+
+    public ApiRespDto<?> signin(SigninReqDto signinReqDto) {
+        Optional<User> foundUser = userRepository.findUserByUsername(signinReqDto.getUsername());
+
+        if (foundUser.isEmpty() || !foundUser.get().getPassword().equals(signinReqDto.getPassword())) {
+            return new ApiRespDto<>("failed", "회원 정보가 일치하지 않습니다.", null);
+        }
+
+        return new ApiRespDto<>("success", "로그인 성공", foundUser.get());
     }
 }
